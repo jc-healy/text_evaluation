@@ -96,9 +96,9 @@ clean_workflow:
 	rm -f reports/analyses.json
 	rm -f reports/summaries.json
 
-## Run all Unit Tests
-test:
-	echo "I still need to be set up!"
+## Run all Unit Tests, doc tests and code coverage
+test: 
+	cd src && pytest --doctest-modules -v --cov
 
 ## Lint using flake8
 lint:

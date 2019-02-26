@@ -101,6 +101,8 @@ dependencies:
   - qtconsole=4.4.3=py37_0
   - readline=7.0=h7b6447c_5
   - requests=2.21.0=py37_0
+  - scikit-learn=0.20.2=py37hd81dba3_0
+  - scipy=1.2.1=py37h7c811a0_0
   - send2trash=1.5.0=py37_0
   - setuptools=40.8.0=py37_0
   - sip=4.19.8=py37hf484d3e_0

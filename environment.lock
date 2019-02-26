@@ -39,6 +39,7 @@ dependencies:
   - ipywidgets=7.4.2=py37_0
   - jedi=0.13.2=py37_0
   - jinja2=2.10=py37_0
+  - joblib=0.13.2=py37_0
   - jpeg=9b=h024ee3a_2
   - jsonschema=2.6.0=py37_0
   - jupyter=1.0.0=py37_7
@@ -78,7 +79,7 @@ dependencies:
   - pcre=8.42=h439df22_0
   - pexpect=4.6.0=py37_0
   - pickleshare=0.7.5=py37_0
-  - pip=19.0.1=py37_0
+  - pip=19.0.3=py37_0
   - pluggy=0.8.1=py37_0
   - prometheus_client=0.5.0=py37_0
   - prompt_toolkit=2.0.8=py_0
@@ -117,7 +118,7 @@ dependencies:
   - urllib3=1.24.1=py37_0
   - wcwidth=0.1.7=py37_0
   - webencodings=0.5.1=py37_1
-  - wheel=0.32.3=py37_0
+  - wheel=0.33.1=py37_0
   - widgetsnbextension=3.4.2=py37_0
   - xz=5.2.4=h14c3975_4
   - zeromq=4.3.1=he6710b0_3

@@ -5,6 +5,7 @@ dependencies:
     - -e .  # conda >= 4.4 only
     - python-dotenv>=0.5.1
     - nbval
+    - nbdime
   - setuptools
   - wheel
   - sphinx
@@ -16,4 +17,5 @@ dependencies:
   - pandas
   - requests
   - python>=3.6
+  - joblib
 

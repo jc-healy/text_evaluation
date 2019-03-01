@@ -1,0 +1,16 @@
+[
+  {
+    "datasource_name": "yelp",
+    "datasource_opts": {
+      "num_reviews": 10000
+    },
+    "output_dataset": "yelp_small"
+  },
+  {
+    "datasource_name": "yelp",
+    "datasource_opts": {
+      "num_reviews": 100000
+    },
+    "output_dataset": "yelp_med"
+  }
+]

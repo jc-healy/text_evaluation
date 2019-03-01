@@ -208,6 +208,8 @@ class Dataset(Bunch):
         if data_path is None:
             data_path = processed_data_path
         else:
+
+            
             data_path = pathlib.Path(data_path)
 
         if metadata_only:
@@ -221,12 +223,12 @@ class Dataset(Bunch):
         return ds
 
     @classmethod
-    def from_raw(cls, dataset_name,
-                 cache_path=None,
-                 fetch_path=None,
-                 force=False,
-                 unpack_path=None,
-                 **kwargs):
+    def from_datasource(cls, dataset_name,
+                        cache_path=None,
+                        fetch_path=None,
+                        force=False,
+                        unpack_path=None,
+                        **kwargs):
         '''Creates Dataset object from a named DataSource.
 
         Dataset will be cached after creation. Subsequent calls with matching call
@@ -236,7 +238,6 @@ class Dataset(Bunch):
         ----------
         dataset_name:
             Name of dataset to load. see `available_datasources()` for the current list
-            be returned (if available)
         cache_path: path
             Directory to search for Dataset cache files
         fetch_path: path
@@ -437,7 +438,7 @@ class DataSource(object):
         self.fetched_ = False
 
     def add_file(self, hash_type='sha1', hash_value=None,
-                 name=None, *, file_name):
+                 name=None, file_name=None, *, source_file):
         """
         Add a file to the file list.
 
@@ -448,16 +449,19 @@ class DataSource(object):
         hash_value: string or None
             if None, hash will be computed from specified file
         file_name: string
-            Name of downloaded file.
+            Name of destination file.
         name: str
             text description of this file.
+        source_file: path
+            file to be copied
         """
-        fq_file = pathlib.Path(self.dataset_dir) / file_name
-        if not fq_file.exists():
-            logger.warning(f"{file_name} not found on disk")
+        source_file = pathlib.Path(source_file)
+        if not source_file.exists():
+            logger.warning(f"{source_file} not found on disk")
         fetch_dict = {'hash_type':hash_type,
                       'hash_value':hash_value,
                       'name': name,
+                      'source_file': source_file,
                       'file_name':file_name}
         self.file_list.append(fetch_dict)
         self.fetched_ = False

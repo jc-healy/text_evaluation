@@ -84,9 +84,12 @@
   "yelp": {
     "dataset_dir": "/mnt/timc/sandbox/ava00114/text_evaluation/data/raw",
     "load_function_args": [],
-    "load_function_kwargs": {},
-    "load_function_module": "src.data.utils",
-    "load_function_name": "process_dataset_default",
+    "load_function_kwargs": {
+      "num_reviews": 10000,
+      "random_seed": 42
+    },
+    "load_function_module": "src.data.localdata",
+    "load_function_name": "process_yelp",
     "name": "yelp",
     "url_list": [
       {

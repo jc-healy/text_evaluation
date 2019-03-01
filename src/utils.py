@@ -88,15 +88,3 @@ def list_dir(path, fully_qualified=False, glob_pattern='*'):
         return list(pathlib.Path(path).glob(glob_pattern))
 
     return [file.name for file in pathlib.Path(path).glob(glob_pattern)]
-
-def something_useful(text):
-    """
-    Do something useful
-    text: character string (no default)
-    Returns
-    -------
-    nothing... absolutely nothing!
-    """
-
-    print(text)
-    

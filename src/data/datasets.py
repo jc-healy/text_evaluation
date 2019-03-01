@@ -17,6 +17,7 @@ __all__ = [
     'Dataset',
     'DataSource',
     'add_datasource',
+    'del_datasource',
     'available_datasets',
     'available_datasources',
     'process_datasources',
@@ -84,6 +85,16 @@ def add_datasource(rawds):
     rawds_list[rawds.name] = rawds.to_dict()
     save_json(rds_file_fq, rawds_list)
 
+def del_datasource(key):
+    """Delete an entry in the datasource dict
+
+    key: name of data source to delete
+    """
+    datasource_list, datasource_file_fq = available_datasources(keys_only=False)
+
+    del(datasource_list[key])
+    save_json(datasource_file_fq, datasource_list)
+    
 def available_datasources(datasource_file='datasources.json',
                            datasource_path=None, keys_only=True):
     """Returns the list of available datasets.
@@ -208,8 +219,6 @@ class Dataset(Bunch):
         if data_path is None:
             data_path = processed_data_path
         else:
-
-            
             data_path = pathlib.Path(data_path)
 
         if metadata_only:
@@ -437,8 +446,8 @@ class DataSource(object):
         self.file_list.append(filelist_entry)
         self.fetched_ = False
 
-    def add_file(self, hash_type='sha1', hash_value=None,
-                 name=None, file_name=None, *, source_file):
+    def add_file(self, source_file=None, *, hash_type='sha1', hash_value=None,
+                 name=None, file_name=None):
         """
         Add a file to the file list.
 
@@ -455,18 +464,22 @@ class DataSource(object):
         source_file: path
             file to be copied
         """
+        if source_file is None:
+            raise Exception("`source_file` is required")
         source_file = pathlib.Path(source_file)
+        if file_name:
+            file_name = str(file_name)
         if not source_file.exists():
             logger.warning(f"{source_file} not found on disk")
-        fetch_dict = {'hash_type':hash_type,
-                      'hash_value':hash_value,
+        fetch_dict = {'hash_type': hash_type,
+                      'hash_value': hash_value,
                       'name': name,
-                      'source_file': source_file,
-                      'file_name':file_name}
+                      'source_file': str(source_file),
+                      'file_name': file_name}
         self.file_list.append(fetch_dict)
         self.fetched_ = False
 
-    def add_url(self, url=None, hash_type='sha1', hash_value=None,
+    def add_url(self, url=None, *, hash_type='sha1', hash_value=None,
                 name=None, file_name=None):
         """
         Add a URL to the file list
@@ -481,6 +494,8 @@ class DataSource(object):
         name: str
             text description of this file.
         """
+        if url is None:
+            raise Exception("`url` is required")
 
         fetch_dict = {'url': url,
                       'hash_type':hash_type,
@@ -557,6 +572,7 @@ class DataSource(object):
         else:
             self.fetched_ = True
 
+        self.unpacked_ = False
         return self.fetched_
 
 
@@ -628,7 +644,7 @@ class DataSource(object):
         if dset is None:
             metadata = self.default_metadata(use_docstring=use_docstring)
             supplied_metadata = kwargs.pop('metadata', {})
-            dset_opts = self.dataset_opts(metadata={**metadata, **supplied_metadata})
+            dset_opts = self.dataset_opts(metadata={**metadata, **supplied_metadata}, **kwargs)
             dset = Dataset(**dset_opts)
             dset.dump(dump_path=cache_path, file_base=meta_hash)
 

@@ -193,11 +193,10 @@ def fetch_file(url=None, contents=None,
             file_name = url.split("/")[-1]
             logger.debug(f"`file_name` not specified. Inferring from URL: {file_name}")
         elif source_file:
-            file_name = source_file.name
+            file_name = str(pathlib.Path(source_file).name)
             logger.debug(f"`file_name` not specified. Inferring from `source_file`: {file_name}")
         else:
             raise Exception('One of `file_name`, `url`, or `source_file` is required')
-        logger.debug(f'No file_name specified. Inferring {file_name} from URL')
     dl_data_path = pathlib.Path(dst_dir)
 
     if not os.path.exists(dl_data_path):
@@ -219,7 +218,7 @@ def fetch_file(url=None, contents=None,
                     return True, raw_data_file, raw_file_hash
             else:
                 logger.warning(f"{file_name} exists but has bad hash {raw_file_hash}."
-                               " Re-downloading")
+                               " Re-fetching")
         else:
             if force is False:
                 logger.debug(f"{file_name} exists, but no hash to check. "
@@ -251,7 +250,10 @@ def fetch_file(url=None, contents=None,
         return True, raw_data_file, raw_file_hash
     elif source_file is not None:
         shutil.copyfile(source_file, raw_data_file)
-        logger.debug("Copying {source_file.name} to raw_data_path")
+        raw_file_hash = hash_file(raw_data_file, algorithm=hash_type).hexdigest()
+        source_file = pathlib.Path(source_file)
+        logger.debug(f"Copying {source_file.name} to raw_data_path")
+        return True, raw_data_file, raw_file_hash
     else:
         raise Exception('One of `url` or `contents` must be specified')
 
